@@ -43,6 +43,8 @@ services:
       dockerfile: Dockerfile
     container_name: nginx-app
     restart: unless-stopped
+    environment:
+      REDIS_HOST: app_redis
     working_dir: /var/www/
     volumes:
       - ./:/var/www
