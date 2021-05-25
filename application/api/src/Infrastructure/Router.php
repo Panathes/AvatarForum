@@ -11,13 +11,14 @@ class Router
 
     public function __construct()
     {
-        $this->routes[] = new Route('users', 'POST', 'create');
+        $this->routes[] = new Route('/users', 'POST', 'create');
+        $this->routes[] = new Route('/', 'GET', 'status');
     }
 
     public function handleRequest(Controller $controller): Response
     {
         foreach ($this->routes as $route) {
-            if ($_SERVER['REQUEST_URI'] === $route->getUri() && $_SERVER['REQUEST_METHOD'] === $route->getUri()) {
+            if ($_SERVER['REQUEST_URI'] === $route->getUri() && $_SERVER['REQUEST_METHOD'] === $route->getMethod()) {
                 return $controller->{$route->getController()}();
             }
         }
