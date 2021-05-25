@@ -4,11 +4,11 @@ namespace App\Infrastructure;
 
 class Controller
 {
-    protected Db $db;
+    protected $db;
 
-    public function __construct(Db $db)
+    public function __construct()
     {
-        $this->db = $db;
+        $this->db = Db::dbConnect();
     }
 
     public function status(): Response
