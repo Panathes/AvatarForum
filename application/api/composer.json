@@ -1,0 +1,13 @@
+{
+    "name": "panathes/avatar-forum-api",
+    "type": "project",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "App\\": "src"
+        },
+        "files": [
+            "index.php"
+        ]
+    }
+}
