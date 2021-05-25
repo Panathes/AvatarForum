@@ -1,4 +1,4 @@
-version: '3.5'
+version: '3.7'
 
 services:
   database:
@@ -15,5 +15,34 @@ services:
     networks:
       - database
 
+  app:
+    build:
+      args:
+        user: avatar
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: travellist
+    container_name: travellist-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    networks:
+      - database
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - 8080:80
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d/
+    networks:
+      - database
+
 networks:
   database:
+    driver: bridge
