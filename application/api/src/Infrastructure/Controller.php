@@ -14,6 +14,7 @@ class Controller
     public function __construct(Db $db, UserFactory $factory)
     {
         $this->db = $db;
+        $this->factory = $factory;
     }
 
     public function status(): Response
@@ -26,8 +27,12 @@ class Controller
         $user = $this->factory->createUser($_POST['firstname'], $_POST['lastname'], $_POST['mail'], $_POST['password']);
         $avatar = $this->factory->createAvatar($user, $_FILES['avatar']['path'], $_FILES['avatar']['filename']);
 
-        $this->db->saveUser($user);
-        $this->db->saveAvatar($avatar);
+        try {
+            $this->db->saveUser($user);
+            $this->db->saveAvatar($avatar);
+        } catch (\Exception $exception) {
+            return new Response(400, $exception->getMessage());
+        }
 
         $view = new UserView($user);
         $view->avatar = new AvatarView($avatar);
