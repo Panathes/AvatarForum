@@ -4,6 +4,7 @@ namespace App\Domain\Model;
 
 class Avatar
 {
+    protected int $id;
     protected User $user;
     protected string $path;
     protected string $name;
@@ -12,6 +13,16 @@ class Avatar
     {
         $this->user = $user;
         $this->path = $path;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
     }
 
     public function getUser(): User
