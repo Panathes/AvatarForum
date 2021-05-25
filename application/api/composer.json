@@ -6,5 +6,10 @@
         "psr-4": {
             "App\\": "src"
         }
+    },
+    "scripts": {
+        "db-migrate": [
+            "docker exec avatar-app sh -c 'mysql -uroot -proot avatar < ./migration/migration.sql'"
+        ]
     }
 }

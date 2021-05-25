@@ -1,4 +1,4 @@
--- Table creation
+USE `avatar`;
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
     `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS `user` (
     `mail` varchar(150) NOT NULL,
     `password` varchar(150) NOT NULL,
     PRIMARY KEY (`id`)
-    ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4_unicode_ci;
+    ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 DROP TABLE IF EXISTS `avatar`;
 CREATE TABLE IF NOT EXISTS `avatar` (
     `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -16,5 +16,5 @@ CREATE TABLE IF NOT EXISTS `avatar` (
     `name` varchar(150) NOT NULL,
     UNIQUE INDEX IDX_3F73783B03A8386 (`user_id`),
     PRIMARY KEY (`id`)
-    ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4_unicode_ci;
+    ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 ALTER TABLE `avatar` ADD CONSTRAINT FK_3F73783B03A8386 FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);

@@ -18,10 +18,10 @@ class Db
 
     public function __construct()
     {
-        $this->host = getenv('DB_HOST') ?: '127.0.0.1';
-        $this->user = getenv('DB_USER') ?: 'avatar';
-        $this->dbname = getenv('DB_NAME') ?: 'user';
-        $this->password = getenv('DB_PASS') ?: 'admin';
+        $this->host = getenv('DB_HOST') ?: 'avatar-app';
+        $this->user = getenv('DB_USER') ?: 'root';
+        $this->dbname = getenv('DB_NAME') ?: 'avatar';
+        $this->password = getenv('DB_PASS') ?: 'root';
         $this->dbConnect();
     }
 

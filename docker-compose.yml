@@ -12,6 +12,7 @@ services:
       MYSQL_USER: user
     volumes:
       - ./docker-compose/mysql:/var/lib
+      - ./application/api/migration:/migration
     networks:
       - database
 
