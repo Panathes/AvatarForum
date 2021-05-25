@@ -1,17 +1,28 @@
-version: '3.7'
+version: "3.7"
 
 services:
-  database:
-    image: mysql:latest
+  db:
+    image: mariadb:latest
+    container_name: avatar-app
+    restart: unless-stopped
     environment:
+      MYSQL_DATABASE: avatar
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: forum
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: user
-    ports:
-      - 3306:3306
+      MYSQL_PASSWORD: admin
+      MYSQL_USER: user
     volumes:
-      - ./data:/var/lib
+      - ./docker-compose/mysql:/docker-entrypoint-initdb.d
+    networks:
+      - database
+
+  nginx:
+    image: nginx:1.20.0
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d
     networks:
       - database
 
@@ -22,24 +33,11 @@ services:
         uid: 1000
       context: ./
       dockerfile: Dockerfile
-    image: travellist
-    container_name: travellist-app
+    container_name: nginx-app
     restart: unless-stopped
     working_dir: /var/www/
     volumes:
       - ./:/var/www
-    networks:
-      - database
-
-  nginx:
-    image: nginx:alpine
-    container_name: nginx
-    restart: unless-stopped
-    ports:
-      - 8080:80
-    volumes:
-      - ./:/var/www
-      - ./docker-compose/nginx:/etc/nginx/conf.d/
     networks:
       - database
 
