@@ -17,8 +17,10 @@ class UserFactory
         return $user;
     }
 
-    public function createAvatar(User $user, string $path, string $name): Avatar
+    public function createAvatar(User $user, string $tmpPath, string $name): Avatar
     {
+        $path = str_replace('/tmp/', '', $tmpPath);
+        move_uploaded_file($tmpPath, UPLOAD_DIR.$path);
         $avatar = new Avatar($user, $path);
         $avatar->setName($name);
 

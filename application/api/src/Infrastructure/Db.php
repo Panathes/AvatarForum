@@ -81,7 +81,7 @@ class Db
 ) VALUES (
   :user_id,
   :path_,
-  :name_,
+  :name_
 )
 ;";
         $stmt = $this->connection->prepare($sql);
@@ -93,5 +93,83 @@ class Db
         $id = (int)$this->connection->lastInsertId();
         $avatar->setId($id);
         return $id;
+    }
+
+    public function getUser(string $id): ?User
+    {
+        $sql = "SELECT 
+  `id`, 
+  `firstname`,
+  `lastname`,
+  `mail`
+FROM 
+  `user`
+WHERE
+  `id` = :id
+;";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindValue(":id", htmlspecialchars($id));
+        $stmt->execute();
+        self::errorHandler($stmt);
+
+        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        if (false === $data) {
+            return null;
+        }
+
+        $user = new User($data['mail']);
+        $user->setId($data['id']);
+        $user->setFirstname($data['firstname']);
+        $user->setLastname($data['lastname']);
+        return $user;
+    }
+
+    public function getAvatar(User $user): ?Avatar
+    {
+        $sql = "SELECT 
+  `id`, 
+  `path`,
+  `name`
+FROM 
+  `avatar`
+WHERE
+  `user_id` = :id
+;";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindValue(":id", htmlspecialchars($user->getId()));
+        $stmt->execute();
+        self::errorHandler($stmt);
+
+        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        if (false === $data) {
+            return null;
+        }
+
+        $avatar = new Avatar($user, $data['path']);
+        $avatar->setId($data['id']);
+        $avatar->setName($data['name']);
+        return $avatar;
+    }
+
+    public function getAvatarPathByUserId(string $id): ?string
+    {
+        $sql = "SELECT 
+  `path`
+FROM 
+  `avatar`
+WHERE
+  `user_id` = :id
+;";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindValue(":id", htmlspecialchars($id));
+        $stmt->execute();
+        self::errorHandler($stmt);
+
+        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        if (false === $data) {
+            return null;
+        }
+
+        return $data['path'];
     }
 }
