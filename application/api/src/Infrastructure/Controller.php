@@ -43,7 +43,7 @@ class Controller
     {
         $user = $this->db->getUser($id);
         if (null === $user) {
-            return new Response(404, 'Not found');
+            return Router::getNotFoundResponse();
         }
 
         $view = new UserView($user);
@@ -55,7 +55,7 @@ class Controller
     {
         $path = $this->db->getAvatarPathByUserId($id);
         if (null === $path) {
-            return new Response(404, 'Not found');
+            return Router::getNotFoundResponse();
         }
 
         return new Response(200, UPLOAD_DIR.$path, true);
