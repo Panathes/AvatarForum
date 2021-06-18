@@ -35,6 +35,17 @@ services:
     networks:
       - database
 
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ./docker-compose/rabbit:/var/lib/rabbitmq/
+      - ./log/:/var/log/rabbitmq
+
+
   app:
     build:
       args:
