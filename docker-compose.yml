@@ -48,6 +48,7 @@ services:
     working_dir: /var/www/
     volumes:
       - ./:/var/www
+      - ./uploads:/uploads
     networks:
       - database
 
@@ -59,8 +60,19 @@ services:
     volumes:
       - ./:/var/www
       - ./docker-compose/lambda:/etc/nginx/conf.d
+      - ./uploads:/uploads
     networks:
       - database
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ./data/:/var/lib/rabbitmq/
+      - ./log/:/var/log/rabbitmq
 
   lambda:
     build:
