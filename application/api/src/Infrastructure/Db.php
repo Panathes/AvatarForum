@@ -35,7 +35,7 @@ class Db
     {
         try {
             self::$connection = new PDO('mysql:host='.$this->host.';dbname='.$this->dbname.'', $this->user, $this->password);
-        } catch (PDOException $exception) {
+        } catch (\PDOException $exception) {
             die($exception->getMessage());
         }
         self::$connection->exec('SET NAMES UTF8');

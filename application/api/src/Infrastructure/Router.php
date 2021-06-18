@@ -13,6 +13,7 @@ class Router
     {
         $this->routes[] = new Route('/users', 'POST', 'create');
         $this->routes[] = new Route('/', 'GET', 'status');
+        $this->routes[] = new Route('/', 'GET', 'test');
     }
 
     public function handleRequest(Controller $controller): Response
