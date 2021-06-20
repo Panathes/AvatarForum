@@ -30,8 +30,39 @@ services:
     ports:
       - 8000:80
     volumes:
-      - ./:/var/www
+      - ./application/api/:/var/www
       - ./docker-compose/nginx:/etc/nginx/conf.d
+    networks:
+      - database
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ./docker-compose/rabbit:/var/lib/rabbitmq/
+      - ./log/:/var/log/rabbitmq
+    networks:
+      - database
+
+
+  lambda:
+    build:
+      args:
+        user: avatar
+        uid: 1000
+      context: ./
+      dockerfile: ./docker-compose/lambda/Dockerfile
+    container_name: lambda
+    restart: unless-stopped
+    working_dir: /var/www/
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./application/lambda/:/var/www/
+      - ./avatar/:/var/www/upload/
     networks:
       - database
 
@@ -48,7 +79,8 @@ services:
       REDIS_HOST: app_redis
     working_dir: /var/www/
     volumes:
-      - ./:/var/www
+      - ./application/api/:/var/www/
+      - ./avatar/:/var/www/upload/
     networks:
       - database
 

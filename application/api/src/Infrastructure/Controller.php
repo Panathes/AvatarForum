@@ -3,6 +3,7 @@
 namespace App\Infrastructure;
 
 use App\Domain\Service\UserFactory;
+use App\RabbitMQ\RabbitSender;
 use App\View\AvatarView;
 use App\View\UserView;
 
@@ -30,6 +31,8 @@ class Controller
         try {
             $this->db->saveUser($user);
             $this->db->saveAvatar($avatar);
+            $rabbit = new RabbitSender();
+            $rabbit->sendAvatarPath($avatar);
         } catch (\Exception $exception) {
             return new Response(400, $exception->getMessage());
         }
