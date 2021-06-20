@@ -41,5 +41,3 @@ function resize($filename) {
 // locale Testing
 // $test = "wallpapers/test.jpg";
 // resize($test);
-
-?>

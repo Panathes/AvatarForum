@@ -30,7 +30,7 @@ services:
     ports:
       - 8000:80
     volumes:
-      - ./:/var/www
+      - ./application/api/:/var/www
       - ./docker-compose/nginx:/etc/nginx/conf.d
     networks:
       - database
@@ -48,6 +48,24 @@ services:
       - database
 
 
+  lambda:
+    build:
+      args:
+        user: avatar
+        uid: 1000
+      context: ./
+      dockerfile: ./docker-compose/lambda/Dockerfile
+    container_name: lambda
+    restart: unless-stopped
+    working_dir: /var/www/
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./application/lambda/:/var/www/
+      - ./avatar/:/var/www/upload/
+    networks:
+      - database
+
   app:
     build:
       args:
@@ -61,7 +79,8 @@ services:
       REDIS_HOST: app_redis
     working_dir: /var/www/
     volumes:
-      - ./:/var/www
+      - ./application/api/:/var/www/
+      - ./avatar/:/var/www/upload/
     networks:
       - database
 
