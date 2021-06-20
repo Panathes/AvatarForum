@@ -11,7 +11,6 @@ class Router
 
     public function __construct()
     {
-        $this->routes[] = new Route("/test", "GET", "test");
         $this->routes[] = new Route('/', 'GET', 'status');
         $this->routes[] = new Route('/users/(\d*)/avatar', 'GET', 'getAvatar');
         $this->routes[] = new Route('/users/(\d*)', 'GET', 'get');

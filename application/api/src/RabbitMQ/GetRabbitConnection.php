@@ -13,7 +13,7 @@ class GetRabbitConnection
     public static function getRabbitConnection(): AMQPStreamConnection {
         if (is_null(self::$rabbitConnection)) {
             try {
-                self::$rabbitConnection = new AMQPStreamConnection("localhost", "5672", "guest", "guest");
+                self::$rabbitConnection = new AMQPStreamConnection("rabbitmq", "5672", "guest", "guest");
             } catch (\Exception $e) {
                 die($e);
             }
@@ -21,7 +21,7 @@ class GetRabbitConnection
         return self::$rabbitConnection;
     }
 
-    public static function closeConnectiion() {
+    public static function closeConnection() {
         try {
             self::$rabbitConnection->close();
         } catch (\Exception $e) {

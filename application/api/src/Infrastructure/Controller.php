@@ -3,7 +3,6 @@
 namespace App\Infrastructure;
 
 use App\Domain\Service\UserFactory;
-use App\RabbitMQ\GetRabbitConnection;
 use App\RabbitMQ\RabbitSender;
 use App\View\AvatarView;
 use App\View\UserView;
@@ -32,6 +31,8 @@ class Controller
         try {
             $this->db->saveUser($user);
             $this->db->saveAvatar($avatar);
+            $rabbit = new RabbitSender();
+            $rabbit->sendAvatarPath($avatar);
         } catch (\Exception $exception) {
             return new Response(400, $exception->getMessage());
         }
@@ -61,14 +62,5 @@ class Controller
         }
 
         return new Response(200, UPLOAD_DIR.$path, true);
-    }
-
-    public function test(): Response
-    {
-        $rab = new RabbitSender("resize");
-        $rab->declareQueue("size");
-        $rab->sendMessage("Nouveau message");
-        GetRabbitConnection::closeConnectiion();
-        return new Response(200, "OK", false);
     }
 }

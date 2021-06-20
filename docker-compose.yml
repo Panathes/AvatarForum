@@ -44,6 +44,8 @@ services:
     volumes:
       - ./docker-compose/rabbit:/var/lib/rabbitmq/
       - ./log/:/var/log/rabbitmq
+    networks:
+      - database
 
 
   app:
