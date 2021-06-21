@@ -26,7 +26,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 # Install PHP extensions
 RUN docker-php-ext-configure gmp
 RUN docker-php-ext-configure gd --with-jpeg
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip sockets gmp
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath zip gd sockets gmp
 
 # Get latest Composer
 COPY --from=composer:1.10.21 /usr/bin/composer /usr/bin/composer
@@ -40,3 +40,7 @@ RUN mkdir -p /home/$user/.composer && \
 WORKDIR /var/www
 
 USER $user
+
+CMD composer install
+
+CMD php ./index.php

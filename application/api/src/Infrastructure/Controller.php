@@ -25,7 +25,11 @@ class Controller
 
     public function create(): Response
     {
-        $user = $this->factory->createUser($_POST['firstname'], $_POST['lastname'], $_POST['mail'], $_POST['password']);
+        if (!$_FILES['avatar'] || $_FILES['avatar']['error'] !== 0 || !in_array($_FILES['avatar']['type'], ['image/png', 'image/jpeg', 'image/gif'])) {
+            return new Response(400, 'A valid image (png, jpeg, gif) is mandatory');
+        }
+
+        $user = $this->factory->createUser($_POST['firstname'] ?? '', $_POST['lastname'] ?? '', $_POST['mail'] ?? '', $_POST['password'] ?? '');
         $avatar = $this->factory->createAvatar($user, $_FILES['avatar']['tmp_name'], $_FILES['avatar']['name']);
 
         try {

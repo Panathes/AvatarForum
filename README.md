@@ -8,7 +8,7 @@ docker compose up
 
 To execute migration file inside database container
 ```
-docker exec avatar-app sh -c 'mysql -uroot -proot avatar < ./application/api/migration/migration.sql'
+docker exec avatar-app sh -c 'mysql -uroot -proot avatar < ./migration/migration.sql'
 ```
 
 Then you can call the api endpoints
