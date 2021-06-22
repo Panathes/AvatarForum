@@ -14,7 +14,7 @@ We used php poo without framework with mysql, rabbitMQ and docker.
 
 ## Infrastructure
 
-![Achri](https://user-images.githubusercontent.com/34098640/122897997-cfaa0980-d34a-11eb-92c9-fb4b4c3d6888.png)
+![archi](https://user-images.githubusercontent.com/34098640/122923210-bca43300-d364-11eb-86ac-fb765278387f.png)
 
 ## To launch project
 ```
