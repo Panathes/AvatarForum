@@ -16,14 +16,6 @@ services:
     networks:
       - database
 
-  redis:
-    image: redis:4.0
-    container_name: app_redis
-    ports:
-      - "6382:6379"
-    networks:
-      - database
-
   nginx:
     image: nginx:1.20.0
     restart: unless-stopped
@@ -46,7 +38,6 @@ services:
       - ./log/:/var/log/rabbitmq
     networks:
       - database
-
 
   lambda:
     build:

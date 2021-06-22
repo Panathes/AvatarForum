@@ -7,6 +7,9 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 class ImageSizer
 {
+    /**
+     * @deprecated use resize() instead
+     */
     public function halfSize(string $filename)
     {
         $path = UPLOAD_DIR.$filename;
@@ -24,5 +27,45 @@ class ImageSizer
 
         // Save as file
         imagepng($image_p, $path);
+    }
+
+    public function resize(string $filename)
+    {
+        $path = UPLOAD_DIR.$filename;
+        list($width, $height, $type) = getimagesize($path);
+        $old_image = $this->load_avatar($path, $type);
+        $new_avatar = $this->resize_avatar(100, 100, $old_image, $width, $height);
+        $this->save_avatar($new_avatar, $path, $type = $type === 1 ? 'gif' : ($type === 2 ? 'jpeg' : 'png'), 75);
+    }
+
+    private function save_avatar($new_avatar, $new_filename, $new_type='jpeg', $quality=80) {
+        if( $new_type == 'jpeg' ) {
+            imagejpeg($new_avatar, $new_filename, $quality);
+        }
+        elseif( $new_type == 'png' ) {
+            imagepng($new_avatar, $new_filename);
+        }
+        elseif( $new_type == 'gif' ) {
+            imagegif($new_avatar, $new_filename);
+        }
+    }
+
+    private function load_avatar($filename, $type) {
+        if( $type == IMAGETYPE_JPEG ) {
+            $avatar = imagecreatefromjpeg($filename);
+        }
+        elseif( $type == IMAGETYPE_PNG ) {
+            $avatar = imagecreatefrompng($filename);
+        }
+        elseif( $type == IMAGETYPE_GIF ) {
+            $avatar = imagecreatefromgif($filename);
+        }
+        return $avatar;
+    }
+
+    private function resize_avatar($new_width, $new_height, $avatar, $width, $height) {
+        $new_avatar = imagecreatetruecolor($new_width, $new_height);
+        imagecopyresampled($new_avatar, $avatar, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+        return $new_avatar;
     }
 }
