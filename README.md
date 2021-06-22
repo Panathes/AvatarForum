@@ -1,6 +1,6 @@
 # AvatarForum
 
-# Description
+## Description
 
 This is a school project. The application is used to resize images.
 We used php poo without framework with mysql, rabbitMQ and docker.
